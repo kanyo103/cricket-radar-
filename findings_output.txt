@@ -1,0 +1,97 @@
+
+======== A. Noise-only region (first 10000 samples = 0.2 s, before any event)
+ cap1: std I=11.46 Q=11.56  kurt I=3.03 Q=2.90
+ cap2: std I=11.98 Q=12.00  kurt I=3.03 Q=2.97
+ cap3: std I=11.75 Q=11.76  kurt I=3.02 Q=2.97
+ cap4: std I=8.53 Q=8.47  kurt I=3.03 Q=2.97
+ regress I_k on I_1 (slope, residual std):
+   cap2: slope=1.044 resid std=0.42   (I std 11.98)
+   cap3: slope=1.025 resid std=0.39   (I std 11.75)
+   cap4: slope=0.743 resid std=0.36   (I std 8.53)
+ same for Q:
+   cap2: slope=0.010 resid std=12.00   (Q std 12.00)
+   cap3: slope=0.013 resid std=11.76   (Q std 11.76)
+   cap4: slope=-0.003 resid std=8.47   (Q std 8.47)
+ cap1 vs cap2 I cross-corr peak 0.999 at lag 0
+ windowed I-corr cap1 vs cap2 (2000-sample windows) over common length:
+   0.00s:+1.00 0.04s:+1.00 0.08s:+1.00 0.12s:+1.00 0.16s:+1.00 0.20s:+1.00 0.24s:+0.26 0.28s:+0.22 0.32s:+0.32 0.36s:+0.44 0.40s:+0.56 0.44s:+0.63 0.48s:+0.35 0.52s:+0.01 0.56s:+0.29 0.60s:+0.41 0.64s:+0.57 0.68s:+0.66 0.72s:+0.73 0.76s:+0.82 0.80s:+0.87 0.84s:+0.90 0.88s:+0.92 0.92s:+0.94 0.96s:+0.96 1.00s:+0.96 1.04s:+0.97 1.08s:+0.98 1.12s:+0.98 1.16s:+0.98 1.20s:+0.99 1.24s:+0.99 1.28s:+0.99 1.32s:+0.99 1.36s:+0.99 1.40s:+0.99 1.44s:+0.99
+ Gaussianity: first-10000 I values quantised to int8; unique values / range: 83
+ fraction of samples where I1==I2 exactly: 0.597
+ spectral flatness of noise-only I vs Q (cap1, 8 x averaged 1024-pt Welch; band std in dB):
+   I: -23.3 -23.0 -22.9 -22.8 -22.6 -22.9 -22.8 -23.0
+   Q: -22.9 -22.7 -22.8 -22.9 -22.9 -22.5 -22.9 -23.0
+
+======== B/C. Tracks, step, rise
+ cap1: onset~0.256s ... end 1.495s | step at t=1.060-1.065s v 18.82 -> 16.38 m/s  drop=2.44 m/s  ratio post/pre=0.870  (jump spans 5 ms between ridge frames)
+        slope before step -0.65 m/s^2 (v~18.8), after step -1.30 m/s^2 (v~16.4)
+        peak v_r=19.19 m/s = 69.1 km/h at t=0.543; onset v_r=16.35
+        rise fit: v_inf=20.56, amplitude=4.54 m/s, tau=99 ms, slope=-4.05 m/s^2
+        radial path from onset to step = 15.1 m over 0.804s
+ cap2: onset~0.507s ... end 1.536s | step at t=1.085-1.091s v 22.79 -> 19.86 m/s  drop=2.94 m/s  ratio post/pre=0.871  (jump spans 5 ms between ridge frames)
+        slope before step -1.22 m/s^2 (v~22.8), after step -2.06 m/s^2 (v~19.9)
+        peak v_r=23.17 m/s = 83.4 km/h at t=0.809; onset v_r=18.07
+        rise fit: v_inf=24.28, amplitude=6.81 m/s, tau=77 ms, slope=-3.47 m/s^2
+        radial path from onset to step = 13.0 m over 0.579s
+ cap3: onset~1.736s ... end 2.550s | step at t=2.335-2.340s v 27.59 -> 24.22 m/s  drop=3.37 m/s  ratio post/pre=0.878  (jump spans 5 ms between ridge frames)
+        slope before step -3.71 m/s^2 (v~27.6), after step -3.37 m/s^2 (v~24.2)
+        peak v_r=28.82 m/s = 103.8 km/h at t=1.940; onset v_r=23.15
+        rise fit: v_inf=30.41, amplitude=8.66 m/s, tau=63 ms, slope=-5.94 m/s^2
+        radial path from onset to step = 16.7 m over 0.599s
+ cap4: onset~1.224s ... end 1.930s | step at t=1.531-1.536s v 32.46 -> 29.75 m/s  drop=2.71 m/s  ratio post/pre=0.917  (jump spans 5 ms between ridge frames)
+        slope before step +15.64 m/s^2 (v~32.5), after step -4.23 m/s^2 (v~29.7)
+        peak v_r=34.68 m/s = 124.8 km/h at t=1.428; onset v_r=23.84
+        rise fit: v_inf=36.04, amplitude=12.28 m/s, tau=55 ms, slope=-5.25 m/s^2
+        radial path from onset to step = 10.1 m over 0.307s
+
+======== D. Second-track search (mask +/-1.5 m/s around main ridge, look for others > 12 dB over noise)
+ cap1: frames with 2nd peak: 14
+     t=0.259 v2=49.71 (main 16.34, delta +33.37)  snr=12.0
+     t=0.261 v2=14.64 (main 16.35, delta -1.71)  snr=13.9
+     t=0.264 v2=14.64 (main 16.38, delta -1.74)  snr=19.7
+     t=0.266 v2=14.64 (main 16.41, delta -1.77)  snr=21.8
+     t=0.269 v2=14.64 (main 16.44, delta -1.80)  snr=21.5
+     t=0.271 v2=14.94 (main 16.47, delta -1.53)  snr=19.0
+     t=0.274 v2=18.30 (main 16.52, delta +1.78)  snr=15.8
+     t=0.276 v2=18.30 (main 16.56, delta +1.73)  snr=12.4
+     t=0.279 v2=18.30 (main 16.62, delta +1.68)  snr=12.7
+     t=0.282 v2=18.30 (main 16.67, delta +1.62)  snr=12.7
+     t=0.645 v2=45.13 (main 19.13, delta +26.00)  snr=12.2
+     t=1.060 v2=16.47 (main 18.75, delta -2.29)  snr=13.6
+     t=1.167 v2=68.62 (main 16.29, delta +52.32)  snr=12.4
+     t=1.170 v2=68.62 (main 16.30, delta +52.32)  snr=12.3
+ cap2: frames with 2nd peak: 18
+     t=0.509 v2=16.47 (main 18.03, delta -1.57)  snr=14.3
+     t=0.515 v2=16.47 (main 18.08, delta -1.61)  snr=21.4
+     t=0.520 v2=16.47 (main 18.09, delta -1.62)  snr=19.0
+     t=0.525 v2=20.13 (main 18.51, delta +1.62)  snr=16.2
+     t=0.530 v2=17.38 (main 18.93, delta -1.55)  snr=20.6
+     t=0.535 v2=17.69 (main 19.32, delta -1.64)  snr=12.9
+     t=0.540 v2=17.99 (main 19.74, delta -1.75)  snr=14.1
+     t=0.545 v2=21.65 (main 19.90, delta +1.75)  snr=12.2
+     t=1.119 v2=68.62 (main 19.88, delta +48.74)  snr=12.2
+ cap3: frames with 2nd peak: 18
+     t=1.743 v2=21.65 (main 23.16, delta -1.50)  snr=14.4
+     t=1.748 v2=21.65 (main 23.16, delta -1.51)  snr=22.1
+     t=1.754 v2=24.70 (main 23.17, delta +1.54)  snr=22.8
+     t=1.759 v2=22.26 (main 23.80, delta -1.54)  snr=21.1
+     t=1.764 v2=22.87 (main 24.44, delta -1.57)  snr=23.8
+     t=1.769 v2=26.53 (main 24.90, delta +1.63)  snr=16.0
+     t=1.774 v2=23.79 (main 25.37, delta -1.58)  snr=16.6
+     t=1.779 v2=27.45 (main 25.79, delta +1.66)  snr=13.6
+     t=1.784 v2=24.70 (main 26.25, delta -1.55)  snr=12.8
+ cap4: frames with 2nd peak: 171
+     t=1.226 v2=22.26 (main 23.85, delta -1.59)  snr=14.3
+     t=1.280 v2=33.85 (main 30.94, delta +2.91)  snr=32.9
+     t=1.334 v2=37.51 (main 33.85, delta +3.66)  snr=31.3
+     t=1.388 v2=38.43 (main 34.55, delta +3.88)  snr=25.6
+     t=1.441 v2=32.63 (main 34.67, delta -2.04)  snr=19.2
+     t=1.495 v2=32.63 (main 34.57, delta -1.94)  snr=19.6
+     t=1.556 v2=29.58 (main 32.34, delta -2.76)  snr=16.0
+     t=1.613 v2=32.02 (main 29.55, delta +2.47)  snr=14.2
+     t=1.728 v2=28.97 (main 31.23, delta -2.26)  snr=12.9
+
+======== E. SNR(t) vs receding point target: SNR = K - 10 n log10(R0 + integral v dt)
+ cap1: SNR fall 41.3->11.3 dB over radial path 21.1 m | n=4: R0=3.89 m rms=0.96 dB | free n=3.68, R0=3.15 m rms=0.94 dB
+ cap2: SNR fall 39.0->10.7 dB over radial path 20.6 m | n=4: R0=4.29 m rms=1.29 dB | free n=3.93, R0=4.10 m rms=1.29 dB
+ cap3: SNR fall 37.3->10.0 dB over radial path 20.4 m | n=4: R0=4.56 m rms=1.12 dB | free n=4.46, R0=5.73 m rms=1.11 dB
+ cap4: SNR fall 34.8->10.3 dB over radial path 20.1 m | n=4: R0=5.85 m rms=1.00 dB | free n=4.80, R0=8.30 m rms=0.97 dB

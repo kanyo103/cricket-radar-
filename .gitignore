@@ -1,0 +1,7 @@
+.venv/
+.idea/
+__pycache__/
+*.npy
+email_draft.txt
+capture*.json
+Instructions.txt
